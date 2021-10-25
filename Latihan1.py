@@ -1,25 +1,18 @@
 import numpy as np
 import pandas as pd
+df = pd.read_csv('https://raw.githubusercontent.com/ardhiraka/PFDS_sources/master/property_data.csv')
 
-df = pd.read_csv('https://raw.githubusercontent.com/ardhiraka/PFDS_sources/master/nbaallelo.csv')
-print(len(df)) #melihat jumlah baris
-df.shape
-print(df.shape) #melihat dimensi
-print(df.head()) #melihat 5 baris pertama
+#print(df.head(10)) #akan nge print 10 baris awal
 
-#Menampilkan semua 23 kolom 
-pd.set_option("display.max.columns", None)
-pd.set_option("display.precision", 2)
+#hanya keluar kolom ST_NUM
+print(df['ST_NUM']) 
+#dapat melihat / mengkonfirmasi Missing Values
+df['ST_NUM'].isnull()
 
-print(df.tail(3)) #Mencetak 3 baris terakhir DataFrame
+#Melihat Missing Values Pada Number of Bedrooms
+df['NUM_BEDROOMS']
+print(df['NUM_BEDROOMS'].isnull)
 
-#Exploring Dataset
-#Memeriksa seberapa sering nilai tertentu muncul dalam kolom
-df['team_id'].value_counts()
-df["fran_id"].value_counts()
-#mencari tahu tim "Lakers" lainnya
-df.loc[df['fran_id']=='Lakers', 'team_id'].value_counts() 
-#mengetahui kapan NYK melakukan pertandingan
-df.loc[df['team_id']=='NYK', 'date_game'].agg(('max', 'min'))
-#mengetahui semua pertandingan yang dimainkan NYK
-df.loc[df['team_id']=='NYK', 'pts'].sum()
+#Melihat Unexpected Missing Values
+print(df['OWN_OCCUPIED'])
+print(df['OWN_OCCUPIED'].isnull)
