@@ -1,20 +1,24 @@
 import numpy as np
 import pandas as pd
-mv = ['na', 'n/a', '--']
-df = pd.read_csv('https://raw.githubusercontent.com/ardhiraka/PFDS_sources/master/property_data.csv',na_values=mv)
+import xlrd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
-cnt = 0
-for row in df['OWN_OCCUPIED'] :
-    try:
-        int(row) #Mengubah row menjadi int 
-        df.loc[cnt, 'OWN_OCCUPIED']=np.nan
-    except ValueError:
-        pass
-    cnt+=1
+df_can = pd.read_excel('https://github.com/ardhiraka/PFDS_sources/blob/master/Canada.xlsx?raw=true',
+                        sheet_name='Canada by Citizenship',
+                        skiprows = range(20),
+                        skipfooter = 2)
 
-print(df.head(9))
+df_can.drop(['AREA', 'REG', 'DEV', 'Type', 'Coverage'], axis = 1, inplace=True)
+#Mengganti nama kolom
+df_can.rename(columns={'OdName' : 'Country', 'AreaName' : 'Continent', 'RegName' : 'Region'}, inplace=True)
+years = list(map(str, range(1980, 2014)))
+df_can.set_index('Country', inplace=True)
+haiti = df_can.loc['Haiti', range(1980, 2013)]
 
-#Summarizing Missing Values
-print(df.isnull().sum()) #total missing values 
-print(df.isnull().values.any()) #apakah kita memiliki nilai yang hilang sama sekali?
-print(df.isnull().sum().sum()) #total missing values
+haiti.index = haiti.index.map(int)
+haiti.plot(kind='line')
+plt.title('Immigration from Haiti')
+plt.ylabel('Number of Immigrants')
+plt.xlabel('Years')
+plt.show()

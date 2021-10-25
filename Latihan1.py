@@ -1,18 +1,15 @@
 import numpy as np
 import pandas as pd
-df = pd.read_csv('https://raw.githubusercontent.com/ardhiraka/PFDS_sources/master/property_data.csv')
+import xlrd
 
-#print(df.head(10)) #akan nge print 10 baris awal
+df_can = pd.read_excel('https://github.com/ardhiraka/PFDS_sources/blob/master/Canada.xlsx?raw=true',
+                        sheet_name='Canada by Citizenship',
+                        skiprows = range(20),
+                        skipfooter = 2)
 
-#hanya keluar kolom ST_NUM
-print(df['ST_NUM']) 
-#dapat melihat / mengkonfirmasi Missing Values
-df['ST_NUM'].isnull()
-
-#Melihat Missing Values Pada Number of Bedrooms
-df['NUM_BEDROOMS']
-print(df['NUM_BEDROOMS'].isnull)
-
-#Melihat Unexpected Missing Values
-print(df['OWN_OCCUPIED'])
-print(df['OWN_OCCUPIED'].isnull)
+#print(df_can.head())
+#print(df_can.tail())
+df_can.drop(['AREA', 'REG', 'DEV', 'Type', 'Coverage'], axis = 1, inplace=True)
+#Mengganti nama kolom
+df_can.rename(columns={'OdName' : 'Country', 'AreaName' : 'Continent', 'RegName' : 'Region'}, inplace=True)
+print(df_can.columns)
